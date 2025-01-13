@@ -17,6 +17,16 @@ int mathAbs(int num)
 
 }
 
+int mathPow(int num, int degree)
+{    
+    int numByDegree = 1;
+    for (size_t i = 0; i < degree; i++)
+    {
+        numByDegree= numByDegree * num;
+    }
+    return numByDegree;
+}
+
 void chooseFunctionText()
 {
     std::cout << std::endl;
@@ -280,7 +290,37 @@ void multiplicationWithScalar(std::vector<std::pair<int, int>>& polynom1, int de
     printPolynomial(newPolynom, degree1);
 }
 
+//6 function
+void findValueWithGivenNum(std::vector<std::pair<int, int>>& polynom1, int degree1)
+{
+    std::vector<std::pair<int, int>> newPolynom;
 
+    std::pair<int, int>number;
+
+    char input[MAX_BUFFER_SIZE];
+    std::cout << "Enter value of the x: ";
+    std::cin >> input;
+
+    processingCoefficients(input, number);
+
+    for (int j = 0; j <= degree1; j++)
+    {
+        int numerator, denominator;
+        std::pair<int, int>newCoef;
+
+        numerator = polynom1[j].first * mathPow(number.first, degree1 - j);
+        denominator = polynom1[j].second * mathPow(number.second, degree1 - j);
+
+        simplifyFraction(numerator, denominator);
+
+        newCoef.first = numerator;
+        newCoef.second = denominator;
+
+        newPolynom.push_back(newCoef);
+    }
+
+    printPolynomial(newPolynom, degree1);
+}
 
 // 11 function
 void quitProgram()
