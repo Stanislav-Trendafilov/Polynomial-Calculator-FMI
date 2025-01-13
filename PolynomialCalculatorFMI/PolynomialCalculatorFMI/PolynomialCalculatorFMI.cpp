@@ -258,6 +258,38 @@ void substractionOfPolynomials(std::vector<std::pair<int, int>>& polynom1, std::
     printPolynomial(newPolynom, startSameDegree + difference);
 }
 
+//3 function
+//void multiplicationOfPolynomials(std::vector<std::pair<int, int>>& polynom1, std::vector<std::pair<int, int>>& polynom2, int degree1, int degree2)
+//{
+//    std::vector<std::pair<int, int>> newPolynom;
+//    int startSameDegree = degree1, difference = 0;;
+//    for (int j = 0; j <= startSameDegree; j++)
+//    {
+//        int numerator, denominator;
+//        std::pair<int, int>newCoef;
+//
+//        if (degree1 > degree2)
+//        {
+//            numerator = polynom1[j + difference].first * polynom2[j].second + polynom1[j + difference].second * polynom2[j].first;
+//            denominator = polynom1[j + difference].second * polynom2[j].second;
+//        }
+//        else
+//        {
+//            numerator = polynom1[j].first * polynom2[j + difference].second + polynom1[j].second * polynom2[j + difference].first;
+//            denominator = polynom1[j].second * polynom2[j + difference].second;
+//        }
+//
+//        simplifyFraction(numerator, denominator);
+//
+//        newCoef.first = numerator;
+//        newCoef.second = denominator;
+//
+//        newPolynom.push_back(newCoef);
+//    }
+//
+//    printPolynomial(newPolynom, startSameDegree + difference);
+//}
+
 //5 function
 void multiplicationWithScalar(std::vector<std::pair<int, int>>& polynom1, int degree1)
 {
@@ -322,6 +354,12 @@ void findValueWithGivenNum(std::vector<std::pair<int, int>>& polynom1, int degre
     printPolynomial(newPolynom, degree1);
 }
 
+//10 function
+void factorPolynomial(std::vector<std::pair<int, int>>& polynom1, int degree1)
+{
+
+}
+
 // 11 function
 void quitProgram()
 {
@@ -350,7 +388,7 @@ void runPolynomialCalculations()
     std::cout << std::endl;
 
     std::vector<std::pair<int, int>> polynom2;
-    if (function == 1 || function == 2)
+    if (function == 1 || function == 2|| function == 3 || function == 4)
     {
         std::cout << "Enter Polynomial Q(X): " << std::endl;
         std::cout << "Enter degree of your polynomial: ";
@@ -368,7 +406,7 @@ void runPolynomialCalculations()
             substractionOfPolynomials(polynom1, polynom2, polynomialDegree, polynomialDegree2);
             break;
         case 3:
-
+            //multiplicationOfPolynomials(polynom1, polynom2, polynomialDegree, polynomialDegree2);
             break;
         case 4:
 
@@ -389,7 +427,7 @@ void runPolynomialCalculations()
 
             break;
         case 10:
-
+            factorPolynomial(polynom1, polynomialDegree);
             break;
 
         default:
