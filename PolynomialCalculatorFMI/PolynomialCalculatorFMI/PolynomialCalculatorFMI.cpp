@@ -248,6 +248,40 @@ void substractionOfPolynomials(std::vector<std::pair<int, int>>& polynom1, std::
     printPolynomial(newPolynom, startSameDegree + difference);
 }
 
+//5 function
+void multiplicationWithScalar(std::vector<std::pair<int, int>>& polynom1, int degree1)
+{
+    std::vector<std::pair<int, int>> newPolynom;
+
+    std::pair<int, int>scalar;
+
+    char input[MAX_BUFFER_SIZE];
+    std::cout << "Enter value of the scalar: ";
+    std::cin >> input;
+
+    processingCoefficients(input, scalar);
+
+    for (int j = 0; j <= degree1; j++)
+    {
+        int numerator, denominator;
+        std::pair<int, int>newCoef;
+
+        numerator = polynom1[j].first * scalar.first;
+        denominator = polynom1[j].second *scalar.second;
+
+        simplifyFraction(numerator, denominator);
+
+        newCoef.first = numerator;
+        newCoef.second = denominator;
+
+        newPolynom.push_back(newCoef);
+    }
+
+    printPolynomial(newPolynom, degree1);
+}
+
+
+
 // 11 function
 void quitProgram()
 {
@@ -275,12 +309,15 @@ void runPolynomialCalculations()
     printPolynomial(polynom1, polynomialDegree);
     std::cout << std::endl;
 
-    std::cout << "Enter Polynomial Q(X): " << std::endl;
-    std::cout << "Enter degree of your polynomial: ";
-    std::cin >> polynomialDegree2;
     std::vector<std::pair<int, int>> polynom2;
-    enterPolynomialCoeff(polynomialDegree2, polynom2);
-    printPolynomial(polynom2, polynomialDegree2);
+    if (function == 1 || function == 2)
+    {
+        std::cout << "Enter Polynomial Q(X): " << std::endl;
+        std::cout << "Enter degree of your polynomial: ";
+        std::cin >> polynomialDegree2;
+        enterPolynomialCoeff(polynomialDegree2, polynom2);
+        printPolynomial(polynom2, polynomialDegree2);
+    }
 
     switch (function)
     {
@@ -297,10 +334,10 @@ void runPolynomialCalculations()
 
             break;
         case 5:
-
+            multiplicationWithScalar(polynom1,polynomialDegree);
             break;
         case 6:
-
+            findValueWithGivenNum(polynom1, polynomialDegree);
             break;
         case 7:
 

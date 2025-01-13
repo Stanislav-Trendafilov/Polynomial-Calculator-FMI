@@ -1,2 +1,2 @@
 ﻿  PolynomialCalculatorFMI.cpp
-  PolynomialCalculatorFMI.vcxproj -> C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\PolynomialCalculatorFMI\x64\Debug\PolynomialCalculatorFMI.exe
+C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI.cpp(340,13): error C3861: 'findValueWithGivenNum': identifier not found
