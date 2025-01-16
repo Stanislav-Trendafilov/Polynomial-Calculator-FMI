@@ -140,7 +140,14 @@ void printPolynomial(std::vector<std::pair<int, int>>& polynom1, int polynomialD
                 }
                 else
                 {
-                    std::cout << polynom1[i].first << "x^" << polynomialDegree - i;
+                    if (polynom1[i].first != 1)
+                    {
+                        std::cout << polynom1[i].first << "x^" << polynomialDegree - i;
+                    }
+                    else
+                    {
+                        std::cout << "x^" << polynomialDegree - i;
+                    }
                 }
             }
         }
@@ -157,6 +164,81 @@ void printPolynomial(std::vector<std::pair<int, int>>& polynom1, int polynomialD
         }
     }
     std::cout << std::endl;
+}
+
+std::vector<int> findDivisors(int n) 
+{
+    std::vector<int> divisors;
+    for (int i = 1; i <= n; ++i) 
+    {
+        if (n % i == 0) 
+        {
+            divisors.push_back(i);
+            divisors.push_back(-i);
+        }
+    }
+    return divisors;
+}
+
+double findRoot(const std::vector<double>& coefficients)
+{
+    int constantTerm = static_cast<int>(coefficients.back());
+    int leadingCoefficient = static_cast<int>(coefficients.front());
+
+    std::vector<int> possibleNumerators = findDivisors(constantTerm);
+    std::vector<int> possibleDenominators = findDivisors(leadingCoefficient);
+
+    for (int numerator : possibleNumerators)
+    {
+        for (int denominator : possibleDenominators) 
+        {
+            double root = static_cast<double>(numerator) / denominator;
+
+            double result = 0.0;
+            for (size_t i = 0; i < coefficients.size(); ++i)
+            {
+                result = result * root + coefficients[i];
+            }
+            if (std::fabs(result) < 1e-6) 
+            {
+                return root;
+            }
+        }
+    }
+    return NAN; 
+}
+
+std::vector<double> syntheticDivision(const std::vector<double>& coefficients, double root) 
+{
+    std::vector<double> newCoefficients;
+    double temp = 0.0;
+
+    for (double coef : coefficients) {
+        temp = temp * root + coef;
+        newCoefficients.push_back(temp);
+    }
+
+    newCoefficients.pop_back(); 
+    return newCoefficients;
+}
+
+void factorizePolynomial(std::vector<double> coefficients) {
+    std::cout << "Разлагане на полинома:" << std::endl;
+
+    while (coefficients.size() > 2) 
+    { 
+        double root = findRoot(coefficients);
+        if (std::isnan(root)) 
+        {
+            std::cout << "Не мога да намеря рационален корен." << std::endl;
+            return;
+        }
+
+        std::cout << "(x - " << root << ")";
+        coefficients = syntheticDivision(coefficients, root);
+    }
+
+    std::cout << "(" << coefficients[0] << "x + " << coefficients[1] << ")" << std::endl;
 }
 
 //1 function
@@ -259,27 +341,53 @@ void substractionOfPolynomials(std::vector<std::pair<int, int>>& polynom1, std::
 }
 
 //3 function
+// da pogledna
 void multiplicationOfPolynomials(std::vector<std::pair<int, int>>& polynom1, std::vector<std::pair<int, int>>& polynom2, int degree1, int degree2)
 {
-    std::vector<std::pair<int, int>> newPolynom(polynom1.size() + polynom2.size());
-    for (size_t i = 0; i <= degree1; i++)
-    {
-        for (size_t j = 0; j <= degree2; j++)
-        {
+    std::vector<std::pair<int, int>> newPolynom(polynom1.size() + polynom2.size()-1);
+    //for (size_t i = 0; i <= degree1; i++)
+    //{
+    //    for (size_t j = 0; j <= degree2; j++)
+    //    {
+    //        int numerator = polynom1[i].first * polynom2[j].first;
+    //        int denominator= polynom1[i].second * polynom2[j].second;
+    //
+    //        simplifyFraction(numerator, denominator);
+    //        std::pair<int, int>newCoef;
+    //        
+    //        numerator+= newPolynom[i + j].first;
+    //        denominator+= newPolynom[i + j].second;
+    //         //problem при деном нод и т.н.
+    //        newCoef.first = numerator;
+    //        newCoef.second = denominator;
+    //
+    //        newPolynom[i + j].first = newCoef.first;
+    //        newPolynom[i + j].second = newCoef.second;
+    //
+    //    }
+    //}
+    for (size_t i = 0; i <= degree1; i++) {
+        for (size_t j = 0; j <= degree2; j++) {
+
             int numerator = polynom1[i].first * polynom2[j].first;
-            int denominator= polynom1[i].second * polynom2[j].second;
+            int denominator = polynom1[i].second * polynom2[j].second;
 
             simplifyFraction(numerator, denominator);
-            //std::pair<int, int>newCoef;
-            //
-            //newCoef.first = numerator;
-            //newCoef.second = denominator;
 
-            newPolynom[(degree1-i) + (degree2-j)].first += numerator;
-            newPolynom[(degree1 - i) + (degree2 - j)].second += denominator;
+            // Събиране на дроби с общ знаменател
+            if (newPolynom[i + j].first != 0)
+            {
+                int commonDenominator = newPolynom[i + j].second * denominator;
+                numerator = numerator * (commonDenominator) + newPolynom[i + j].first * (commonDenominator);
+                denominator = commonDenominator;
+                simplifyFraction(numerator, denominator);
+            }
+
+            newPolynom[i + j].first = numerator;
+            newPolynom[i + j].second = denominator;
         }
     }
-    printPolynomial(newPolynom,newPolynom.size());
+    printPolynomial(newPolynom, polynom1.size() + polynom2.size() - 2);
 }
 
 //5 function
