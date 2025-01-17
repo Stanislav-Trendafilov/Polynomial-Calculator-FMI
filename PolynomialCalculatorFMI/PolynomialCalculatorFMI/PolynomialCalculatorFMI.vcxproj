@@ -129,6 +129,9 @@
   <ItemGroup>
     <ClCompile Include="PolynomialCalculatorFMI.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="PolynomialCalculatorFMI.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

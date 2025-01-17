@@ -3,6 +3,7 @@
 #include <iostream>
 #include <windows.h> 
 #include <vector>
+#include "PolynomialCalculatorFMI.h"
 
 const int MAX_BUFFER_SIZE = 512;
 
@@ -59,18 +60,33 @@ void simplifyFraction(int& numerator, int& denominator)
 	denominator /= commonDivisor;
 }
 
-void subtractFractions(std::pair<int, int>& a, const std::pair<int, int>& b)
-{
-	int numerator = a.first * b.second - b.first * a.second;
-	int denominator = a.second * b.second;
-	simplifyFraction(numerator, denominator);
-}
-
-void addFractions(const std::pair<int, int>& a, const std::pair<int, int>& b)
+std::pair<int, int> addFractions(std::pair<int, int>& a,std::pair<int, int>& b) 
 {
 	int numerator = a.first * b.second + b.first * a.second;
 	int denominator = a.second * b.second;
 	simplifyFraction(numerator, denominator);
+	return std::pair<int,int>(numerator, denominator);
+}
+
+std::pair<int, int> subtractFractions(const std::pair<int, int>& a, const std::pair<int, int>& b) {
+	int numerator = a.first * b.second - b.first * a.second;
+	int denominator = a.second * b.second;
+	simplifyFraction(numerator, denominator);
+	return std::pair<int, int>(numerator, denominator);
+}
+
+std::pair<int, int> multiplyFractions(const std::pair<int, int>& a, const std::pair<int, int>& b) {
+	int numerator = a.first * b.first;
+	int denominator = a.second * b.second;
+	simplifyFraction(numerator, denominator);
+	return std::pair<int, int>(numerator, denominator);
+}
+
+std::pair<int, int> divideFractions(const std::pair<int, int>& a, const std::pair<int, int>& b) {
+	int numerator = a.first * b.second;
+	int denominator = a.second * b.first;
+	simplifyFraction(numerator, denominator);
+	return std::pair<int, int>(numerator, denominator);
 }
 
 void processingCoefficients(char input[MAX_BUFFER_SIZE], std::pair<int, int>& ratCoef)
@@ -178,6 +194,32 @@ void printPolynomial(std::vector<std::pair<int, int>>& polynom1, int polynomialD
 		}
 	}
 	std::cout << std::endl;
+}
+
+void printValueOfPolynom(std::pair<int, int> scalar, std::pair<int, int> valueOfPolynomial)
+{
+	if (scalar.second == 1)
+	{
+		if (valueOfPolynomial.second == 1)
+		{
+			std::cout << "P(" << scalar.first << ") = " << valueOfPolynomial.first;
+		}
+		else
+		{
+			std::cout << "P(" << scalar.first << ") = " << valueOfPolynomial.first << "/" << valueOfPolynomial.second;
+		}
+	}
+	else
+	{
+		if (valueOfPolynomial.second == 1)
+		{
+			std::cout << "P(" << scalar.first << "/" << scalar.second << ") = " << valueOfPolynomial.first;
+		}
+		else
+		{
+			std::cout << "P(" << scalar.first << "/" << scalar.second << ") = " << valueOfPolynomial.first << "/" << valueOfPolynomial.second;
+		}
+	}
 }
 
 //
@@ -386,7 +428,7 @@ void multiplicationOfPolynomials(std::vector<std::pair<int, int>>& polynom1, std
 	printPolynomial(newPolynom, polynom1.size() + polynom2.size() - 2);
 }
 
-//5 function
+//5 function - ready
 void multiplicationWithScalar(std::vector<std::pair<int, int>>& polynom1, int degree1)
 {
 	std::vector<std::pair<int, int>> newPolynom;
@@ -416,7 +458,7 @@ void multiplicationWithScalar(std::vector<std::pair<int, int>>& polynom1, int de
 	printPolynomial(newPolynom, degree1);
 }
 
-//6 function
+//6 function - ready
 void findValueWithGivenNum(std::vector<std::pair<int, int>>& polynom1, int degree1)
 {
 	char input[MAX_BUFFER_SIZE];
@@ -427,7 +469,8 @@ void findValueWithGivenNum(std::vector<std::pair<int, int>>& polynom1, int degre
 
 	processingCoefficients(input, scalar);
 
-	std::pair<int, int>valueOfPolynomial;
+	std::pair<int, int>valueOfPolynomial(0,1);	//it is (0,1) in order not to make the denominator 0 while adding
+
 	for (int j = 0; j <= degree1; j++)
 	{
 		int newNumerator, newDenominator;
@@ -435,15 +478,14 @@ void findValueWithGivenNum(std::vector<std::pair<int, int>>& polynom1, int degre
 		newNumerator = polynom1[j].first * mathPow(scalar.first, degree1 - j);
 		newDenominator = polynom1[j].second * mathPow(scalar.second, degree1 - j);
 
-		simplifyFraction(newNumerator, newDenominator);
-
 		std::pair<int, int>newCoef;
-		newCoef = std::make_pair(newNumerator, newDenominator);
+		newCoef.first = newNumerator;
+		newCoef.second = newDenominator;
 
-	}
+		valueOfPolynomial = addFractions(valueOfPolynomial, newCoef);
+	}												
 
-	std::cout << "P(" << scalar.first << "/" << scalar.second << ") = " << valueOfPolynomial.first << "/" << valueOfPolynomial.second;
-
+	printValueOfPolynom(scalar, valueOfPolynomial);
 }
 
 //10 function
