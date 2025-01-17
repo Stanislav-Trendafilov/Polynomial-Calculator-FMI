@@ -1,3 +1,3 @@
 ﻿  PolynomialCalculatorFMI.cpp
-C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI.cpp(428,67): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI.cpp(425,67): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
   PolynomialCalculatorFMI.vcxproj -> C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\PolynomialCalculatorFMI\x64\Debug\PolynomialCalculatorFMI.exe

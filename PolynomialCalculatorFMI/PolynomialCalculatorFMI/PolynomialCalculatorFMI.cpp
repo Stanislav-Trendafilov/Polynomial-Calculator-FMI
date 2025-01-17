@@ -301,11 +301,13 @@ void factorizePolynomial(std::vector<double> coefficients) {
 
 //
 
-//1 function
+//1 function - ready
 void sumOfPolynomials(std::vector<std::pair<int, int>>& polynom1, std::vector<std::pair<int, int>>& polynom2, int degree1, int degree2)
 {
 	std::vector<std::pair<int, int>> newPolynom;
-	int startSameDegree = degree1, difference = 0;;
+
+	int startFromSameDegree = degree1, difference = 0;;
+
 	if (degree1 > degree2)
 	{
 		difference = degree1 - degree2;
@@ -313,7 +315,7 @@ void sumOfPolynomials(std::vector<std::pair<int, int>>& polynom1, std::vector<st
 		{
 			newPolynom.push_back(polynom1[i]);
 		}
-		startSameDegree = degree2;
+		startFromSameDegree = degree2;
 	}
 	if (degree2 > degree1)
 	{
@@ -323,31 +325,26 @@ void sumOfPolynomials(std::vector<std::pair<int, int>>& polynom1, std::vector<st
 			newPolynom.push_back(polynom2[i]);
 		}
 	}
-	for (int j = 0; j <= startSameDegree; j++)
+	for (int j = 0; j <= startFromSameDegree; j++)
 	{
 		int numerator, denominator;
 		std::pair<int, int>newCoef;
 
 		if (degree1 > degree2)
 		{
-			numerator = polynom1[j + difference].first * polynom2[j].second + polynom1[j + difference].second * polynom2[j].first;
-			denominator = polynom1[j + difference].second * polynom2[j].second;
+			newCoef = addFractions(polynom1[j + difference], polynom2[j]);
 		}
 		else
 		{
-			numerator = polynom1[j].first * polynom2[j + difference].second + polynom1[j].second * polynom2[j + difference].first;
-			denominator = polynom1[j].second * polynom2[j + difference].second;
+			newCoef = addFractions(polynom1[j], polynom2[j + difference]);
 		}
 
 		simplifyFraction(numerator, denominator);
 
-		newCoef.first = numerator;
-		newCoef.second = denominator;
-
 		newPolynom.push_back(newCoef);
 	}
 
-	printPolynomial(newPolynom, startSameDegree + difference);
+	printPolynomial(newPolynom, startFromSameDegree + difference);
 }
 
 //2 function 
