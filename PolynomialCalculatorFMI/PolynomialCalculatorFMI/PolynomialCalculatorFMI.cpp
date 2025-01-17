@@ -390,7 +390,7 @@ void substractionOfPolynomials(std::vector<std::pair<int, int>>& polynom1, std::
 	printPolynomial(newPolynom, startSameDegree + difference);
 }
 
-//3 function
+//3 function - ready
 void multiplicationOfPolynomials(std::vector<std::pair<int, int>>& polynom1, std::vector<std::pair<int, int>>& polynom2, int degree1, int degree2)
 {
 	std::vector<std::pair<int, int>> newPolynom(polynom1.size() + polynom2.size() - 1);
@@ -398,21 +398,17 @@ void multiplicationOfPolynomials(std::vector<std::pair<int, int>>& polynom1, std
 	for (size_t i = 0; i <= degree1; i++) {
 		for (size_t j = 0; j <= degree2; j++) {
 
-			int numerator = polynom1[i].first * polynom2[j].first;
-			int denominator = polynom1[i].second * polynom2[j].second;
+			std::pair<int, int>newCoef;
 
-			simplifyFraction(numerator, denominator);
+			newCoef = multiplyFractions(polynom1[i], polynom2[j]);
 
 			if (newPolynom[i + j].first != 0)
 			{
-				int commonDenominator = newPolynom[i + j].second * denominator;
-				numerator = numerator * (commonDenominator / denominator) + newPolynom[i + j].first * (commonDenominator / newPolynom[i + j].second);
-				denominator = commonDenominator;
-				simplifyFraction(numerator, denominator);
+				newCoef = addFractions(newPolynom[i + j], newCoef);
 			}
 
-			newPolynom[i + j].first = numerator;
-			newPolynom[i + j].second = denominator;
+			newPolynom[i + j].first = newCoef.first;
+			newPolynom[i + j].second = newCoef.second;
 		}
 	}
 	printPolynomial(newPolynom, polynom1.size() + polynom2.size() - 2);
