@@ -240,6 +240,7 @@ int  findLcmOfDenominators(std::vector<std::pair<int, int>>& polynom1)
 std::vector<int> findDivisors(int n)
 {
 	std::vector<int> divisors;
+	n = mathAbs(n);
 	for (int i = 1; i <= n; ++i)
 	{
 		if (n % i == 0)
@@ -306,6 +307,53 @@ std::vector<std::pair<int, int>> findAllPossibleRoots(int firstCoef, int lastCoe
 	return allPossibleRoots;
 }
 
+void findAllRootsOfPolynomial(std::vector<std::pair<int, int>> allPossibleRoots, std::vector<std::pair<int, int>> polynom1)
+{
+	std::vector<std::pair<int, int>>allRoots;
+
+	int numberOfX = polynom1.size() - 1;
+
+	for (size_t i = 0; i < allPossibleRoots.size(); i++)
+	{
+		std::pair<int, int>currentRoot = allPossibleRoots[i], currentSum = currentRoot, previousCoef = polynom1[0];
+
+		for (size_t j = 1; j < polynom1.size(); j++)
+		{
+			std::pair<int, int>multiplication = multiplyFractions(currentRoot, previousCoef);
+			currentSum = addFractions(multiplication,polynom1[j]);
+
+			if (j == polynom1.size() - 1 && currentSum.first == 0)
+			{
+				std::pair<int, int> currentSum = currentRoot, previousCoef = polynom1[0];
+				//changing polynomial
+				for (size_t k = 1; k < polynom1.size(); k++)
+				{
+					std::pair<int, int>multiplication = multiplyFractions(currentRoot, previousCoef);
+					currentSum = addFractions(multiplication, polynom1[k]);
+
+					polynom1[k] = currentSum;
+					previousCoef = polynom1[k];
+				}
+				if (numberOfX != allRoots.size())
+				{
+					i--;
+				}
+				allRoots.push_back(currentRoot);
+				polynom1.pop_back();
+			}
+
+			previousCoef = currentSum;
+		}
+	}
+	for (size_t i = 0; i < allRoots.size(); i++)
+	{
+		std::cout << "(" << allRoots[i].first << "/" << allRoots[i].second << ")";
+	}
+	if (polynom1.size() > 1)
+	{
+		printPolynomial(polynom1, polynom1.size() - 1);
+	}
+}
 //1 function - ready
 void sumOfPolynomials(std::vector<std::pair<int, int>>& polynom1, std::vector<std::pair<int, int>>& polynom2, int degree1, int degree2)
 {
@@ -541,6 +589,8 @@ void factorPolynomial(std::vector<std::pair<int, int>>& polynom1, int degree1)
 	std::vector<std::pair<int, int>> allPossibleRoots;
 
 	allPossibleRoots = findAllPossibleRoots(firstCoef, lastCoef);
+
+	findAllRootsOfPolynomial(allPossibleRoots, polynom1);
 
 }
 
