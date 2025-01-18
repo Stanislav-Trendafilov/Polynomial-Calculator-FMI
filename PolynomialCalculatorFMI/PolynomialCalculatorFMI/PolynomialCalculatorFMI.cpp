@@ -199,6 +199,52 @@ void printPolynomial(std::vector<std::pair<int, int>>& polynom1, int polynomialD
 	std::cout << std::endl;
 }
 
+void printPolynomialWithXA(std::vector<std::pair<int, int>>& polynom1, int polynomialDegree)
+{
+	for (int i = 0; i < polynom1.size(); ++i)
+	{
+		if (i > 0 && polynom1[i].first > 0)
+		{
+			std::cout << "+";
+		}
+		if (polynom1[i].second == 1)
+		{
+			if (polynom1[i].first != 0)
+			{
+				if (i == polynom1.size() - 1)
+				{
+					std::cout << polynom1[i].first;
+				}
+				else
+				{
+					if (polynom1[i].first != 1)
+					{
+						if(polynom1[i].first)
+						std::cout << polynom1[i].first << "x^" << polynomialDegree - i;
+					}
+					else
+					{
+						std::cout << "x^" << polynomialDegree - i;
+					}
+				}
+			}
+		}
+		else
+		{
+			if (i == polynom1.size() - 1)
+			{
+				std::cout << polynom1[i].first << "/" << polynom1[i].second;
+			}
+			else
+			{
+				std::cout << polynom1[i].first << "/" << polynom1[i].second << "x^" << polynomialDegree - i;
+			}
+		}
+	}
+	std::cout << std::endl;
+
+}
+
 void printValueOfPolynom(std::pair<int, int> scalar, std::pair<int, int> valueOfPolynomial)
 {
 	if (scalar.second == 1)
@@ -676,6 +722,48 @@ void findValueWithGivenNum(std::vector<std::pair<int, int>>& polynom1, int degre
 	printValueOfPolynom(scalar, valueOfPolynomial);
 }
 
+//9 function - ready
+void representPolynomial(std::vector<std::pair<int, int>>& polynom1, int degree1)
+{
+	std::vector<std::pair<int, int>> newPolynomial(polynom1.size());
+	newPolynomial[0] = polynom1[0];
+
+	char input[MAX_BUFFER_SIZE];
+	std::cout << "Enter value of the a: ";
+	std::cin >> input;
+
+	std::pair<int, int>a;
+
+	processingCoefficients(input, a);
+
+	a.first *= -1;
+
+	int numberOfX = polynom1.size() - 1;
+
+	for (size_t i = 0; i < numberOfX; i++)
+	{
+		std::pair<int, int>currentRoot = a, currentSum = currentRoot, previousCoef = polynom1[0];
+
+		for (size_t j = 1; j < polynom1.size(); j++)
+		{
+			std::pair<int, int>multiplication = multiplyFractions(currentRoot, previousCoef);
+			currentSum = addFractions(multiplication, polynom1[j]);
+
+			if (j == polynom1.size() - 1)
+			{
+				newPolynomial[degree1 - i] = currentSum;
+			}
+
+			polynom1[j] = currentSum;
+			previousCoef = polynom1[j];
+		}
+		polynom1.pop_back();
+	}
+
+	printPolynomial(newPolynomial, degree1);
+
+}
+
 //10 function - ready
 void factorPolynomial(std::vector<std::pair<int, int>>& polynom1, int degree1)
 {
@@ -787,7 +875,7 @@ void runPolynomialCalculations()
 
 		break;
 	case 9:
-
+		representPolynomial(polynom1, polynomialDegree);
 		break;
 	case 10:
 		factorPolynomial(polynom1, polynomialDegree);
