@@ -3,7 +3,6 @@
 #include <iostream>
 #include <windows.h> 
 #include <vector>
-#include "PolynomialCalculatorFMI.h"
 
 const int MAX_BUFFER_SIZE = 512;
 
@@ -51,6 +50,11 @@ int gcd(int a, int b) {
 		a = temp;
 	}
 	return mathAbs(a);
+}
+
+int lcm(int a, int b) 
+{
+	return (a / gcd(a, b)) * b;
 }
 
 void simplifyFraction(int& numerator, int& denominator)
@@ -222,7 +226,16 @@ void printValueOfPolynom(std::pair<int, int> scalar, std::pair<int, int> valueOf
 	}
 }
 
-//
+int  findLcmOfDenominators(std::vector<std::pair<int, int>>& polynom1)
+{
+	int currentLcm = 1;
+	for (size_t i = 0; i < polynom1.size(); i++)
+	{
+		currentLcm = lcm(polynom1[i].second, currentLcm);
+	}
+
+	return currentLcm;
+}
 
 std::vector<int> findDivisors(int n)
 {
@@ -238,68 +251,60 @@ std::vector<int> findDivisors(int n)
 	return divisors;
 }
 
-double findRoot(const std::vector<double>& coefficients)
+void changeRoot(int& numerator, int& denominator)
 {
-	int constantTerm = static_cast<int>(coefficients.back());
-	int leadingCoefficient = static_cast<int>(coefficients.front());
-
-	std::vector<int> possibleNumerators = findDivisors(constantTerm);
-	std::vector<int> possibleDenominators = findDivisors(leadingCoefficient);
-
-	for (int numerator : possibleNumerators)
+	if (numerator < 0 && denominator < 0)
 	{
-		for (int denominator : possibleDenominators)
-		{
-			double root = static_cast<double>(numerator) / denominator;
+		numerator *= -1;
+		denominator *= -1;
+	}
+	else if (numerator > 0 && denominator < 0)
+	{
+		numerator *= -1;
+		denominator *= -1;
+	}
+}
 
-			double result = 0.0;
-			for (size_t i = 0; i < coefficients.size(); ++i)
+bool checkIfAlreadyRootExists(std::vector<std::pair<int, int>> allPossibleRoots, std::pair<int, int> possibleRoot)
+{
+	for (size_t i = 0; i < allPossibleRoots.size(); i++)
+	{
+		if (allPossibleRoots[i].first == possibleRoot.first &&
+			allPossibleRoots[i].second == possibleRoot.second)
+		{
+			return true;
+		}
+	}  
+	return false;
+}
+
+std::vector<std::pair<int, int>> findAllPossibleRoots(int firstCoef, int lastCoef)
+{
+	std::vector<std::pair<int, int>> allPossibleRoots;
+
+	std::vector<int>possibleRootsFromFirstCoef=findDivisors(firstCoef);
+	std::vector<int>possibleRootsFromSecondCoef = findDivisors(lastCoef);
+
+	for (size_t i = 0; i < possibleRootsFromSecondCoef.size(); i++)
+	{
+		for (size_t j = 0; j < possibleRootsFromFirstCoef.size(); j++)
+		{
+			std::pair<int, int>possibleRoot;
+
+			changeRoot(possibleRootsFromSecondCoef[i], possibleRootsFromFirstCoef[j]);
+
+			possibleRoot.first = possibleRootsFromSecondCoef[i];
+			possibleRoot.second = possibleRootsFromFirstCoef[j];
+
+			if (checkIfAlreadyRootExists(allPossibleRoots, possibleRoot)==false)
 			{
-				result = result * root + coefficients[i];
-			}
-			if (std::fabs(result) < 1e-6)
-			{
-				return root;
-			}
+				allPossibleRoots.push_back(possibleRoot);
+			}	
 		}
 	}
-	return NAN;
+	
+	return allPossibleRoots;
 }
-
-std::vector<double> syntheticDivision(const std::vector<double>& coefficients, double root)
-{
-	std::vector<double> newCoefficients;
-	double temp = 0.0;
-
-	for (double coef : coefficients) {
-		temp = temp * root + coef;
-		newCoefficients.push_back(temp);
-	}
-
-	newCoefficients.pop_back();
-	return newCoefficients;
-}
-
-void factorizePolynomial(std::vector<double> coefficients) {
-	std::cout << "Разлагане на полинома:" << std::endl;
-
-	while (coefficients.size() > 2)
-	{
-		double root = findRoot(coefficients);
-		if (std::isnan(root))
-		{
-			std::cout << "Не мога да намеря рационален корен." << std::endl;
-			return;
-		}
-
-		std::cout << "(x - " << root << ")";
-		coefficients = syntheticDivision(coefficients, root);
-	}
-
-	std::cout << "(" << coefficients[0] << "x + " << coefficients[1] << ")" << std::endl;
-}
-
-//
 
 //1 function - ready
 void sumOfPolynomials(std::vector<std::pair<int, int>>& polynom1, std::vector<std::pair<int, int>>& polynom2, int degree1, int degree2)
@@ -414,18 +419,62 @@ void multiplicationOfPolynomials(std::vector<std::pair<int, int>>& polynom1, std
 	printPolynomial(newPolynom, polynom1.size() + polynom2.size() - 2);
 }
 
+//4 function
+void dividePolynomials(std::vector<std::pair<int, int>>& dividend, std::vector<std::pair<int, int>>& divisor,int degree1,int degree2) 
+{	
+	std::vector<std::pair<int, int>> remainder;
+	std::vector<std::pair<int, int>> quotient;
+
+	while (!remainder.empty() /* && remainder[0] >= divisor[0].second*/)
+	{
+		// Изчисляване на водещия коефициент и степен на текущия частен член
+		int coefQuot = dividend[0].first / divisor[0].first;
+		int degreeQuot = dividend.size() - divisor.size();
+
+		// Добавяне на текущия член към частното
+		quotient.push_back({ coefQuot, degreeQuot });
+
+		// Създаване на нов полином: текущия член на частното умножен по делителя
+		std::vector<std::pair<int, int>> currentTerm;
+		for (const auto& term : divisor) {
+			currentTerm.push_back({ term.first * coefQuot, term.second + degreeQuot });
+		}
+
+		// Изваждане на текущия член от остатъка
+		std::vector<std::pair<int, int>> newRemainder;
+		size_t i = 0, j = 0;
+		while (i < remainder.size() || j < currentTerm.size())
+		{
+			if (i < remainder.size() && (j >= currentTerm.size() || remainder[i].second > currentTerm[j].second)) {
+				newRemainder.push_back(remainder[i]);
+				i++;
+			}
+			else if (j < currentTerm.size() &&(i >= remainder.size() || remainder[i].second < currentTerm[j].second))
+			{
+				newRemainder.push_back({ -currentTerm[j].first, currentTerm[j].second });
+				j++;
+			}
+			else 
+			{
+				int newCoef = remainder[i].first - currentTerm[j].first;
+				if (newCoef != 0) {
+					newRemainder.push_back({ newCoef, remainder[i].second });
+				}
+				i++;
+				j++;
+			}
+		}
+		remainder = newRemainder;
+	}
+
+	printPolynomial(quotient, quotient.size()-1);
+	printPolynomial(remainder, remainder.size());
+}
+
 //5 function - ready
-void multiplicationWithScalar(std::vector<std::pair<int, int>>& polynom1, int degree1)
+void multiplicationWithScalar(std::vector<std::pair<int, int>>& polynom1, int degree1, std::pair<int, int>scalar)
 {
 	std::vector<std::pair<int, int>> newPolynom;
-
-	std::pair<int, int>scalar;
-
-	char input[MAX_BUFFER_SIZE];
-	std::cout << "Enter value of the scalar: ";
-	std::cin >> input;
-
-	processingCoefficients(input, scalar);
 
 	for (int j = 0; j <= degree1; j++)
 	{
@@ -477,6 +526,21 @@ void findValueWithGivenNum(std::vector<std::pair<int, int>>& polynom1, int degre
 //10 function
 void factorPolynomial(std::vector<std::pair<int, int>>& polynom1, int degree1)
 {
+	int lcm =findLcmOfDenominators(polynom1);
+
+	std::pair<int, int>scalarToRemoveDenominators;
+	scalarToRemoveDenominators.first = lcm;
+	scalarToRemoveDenominators.second = 1;
+
+	std::cout << "--Removing denominators to work with whole nums--"<<std::endl;
+	multiplicationWithScalar(polynom1, degree1, scalarToRemoveDenominators);
+
+	int firstCoef = polynom1[0].first;
+	int lastCoef = polynom1[degree1].first;
+
+	std::vector<std::pair<int, int>> allPossibleRoots;
+
+	allPossibleRoots = findAllPossibleRoots(firstCoef, lastCoef);
 
 }
 
@@ -523,6 +587,9 @@ void runPolynomialCalculations()
 		enterPolynomialCoeff(polynomialDegree2, polynom2);
 		printPolynomial(polynom2, polynomialDegree2);
 	}
+	
+	char input[MAX_BUFFER_SIZE];
+	std::pair<int, int>scalar;
 
 	switch (function)
 	{
@@ -536,10 +603,14 @@ void runPolynomialCalculations()
 		multiplicationOfPolynomials(polynom1, polynom2, polynomialDegree, polynomialDegree2);
 		break;
 	case 4:
-
+		dividePolynomials(polynom1, polynom2, polynomialDegree, polynomialDegree2);
 		break;
 	case 5:
-		multiplicationWithScalar(polynom1, polynomialDegree);
+		std::cout << "Enter value of the scalar: ";
+		std::cin >> input;
+
+		processingCoefficients(input, scalar);
+		multiplicationWithScalar(polynom1, polynomialDegree,scalar);
 		break;
 	case 6:
 		findValueWithGivenNum(polynom1, polynomialDegree);

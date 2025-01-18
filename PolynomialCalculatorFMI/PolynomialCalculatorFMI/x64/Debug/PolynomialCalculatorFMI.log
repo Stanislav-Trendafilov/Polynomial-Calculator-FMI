@@ -1,7 +1,10 @@
 ﻿  PolynomialCalculatorFMI.cpp
-C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI.cpp(330,18): warning C4101: 'denominator': unreferenced local variable
-C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI.cpp(330,7): warning C4101: 'numerator': unreferenced local variable
-C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI.cpp(375,18): warning C4101: 'denominator': unreferenced local variable
-C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI.cpp(375,7): warning C4101: 'numerator': unreferenced local variable
-C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI.cpp(414,67): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI.cpp(335,18): warning C4101: 'denominator': unreferenced local variable
+C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI.cpp(335,7): warning C4101: 'numerator': unreferenced local variable
+C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI.cpp(380,18): warning C4101: 'denominator': unreferenced local variable
+C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI.cpp(380,7): warning C4101: 'numerator': unreferenced local variable
+C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI.cpp(419,67): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI.cpp(432,52): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI.cpp(470,45): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI.cpp(471,45): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
   PolynomialCalculatorFMI.vcxproj -> C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\PolynomialCalculatorFMI\x64\Debug\PolynomialCalculatorFMI.exe
