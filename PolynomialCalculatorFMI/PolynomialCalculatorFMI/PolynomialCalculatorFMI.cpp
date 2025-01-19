@@ -459,7 +459,7 @@ void findAllRootsOfPolynomial(std::vector<std::pair<int, int>> allPossibleRoots,
 std::vector<std::pair<int, int>> multiplicationWithScalar(std::vector<std::pair<int, int>>& polynom1, int degree1, std::pair<int, int>scalar);
 
 //1 function - ready
-void sumOfPolynomials(std::vector<std::pair<int, int>>& polynom1, std::vector<std::pair<int, int>>& polynom2, int degree1, int degree2)
+std::vector<std::pair<int, int>> sumOfPolynomials(std::vector<std::pair<int, int>>& polynom1, std::vector<std::pair<int, int>>& polynom2, int degree1, int degree2)
 {
 	std::vector<std::pair<int, int>> newPolynom;
 
@@ -499,8 +499,7 @@ void sumOfPolynomials(std::vector<std::pair<int, int>>& polynom1, std::vector<st
 		newPolynom.push_back(newCoef);
 	}
 
-	std::cout << "This is the result polynomial: ";
-	printPolynomial(newPolynom, startFromSameDegree + difference);
+	return newPolynom;
 }
 
 //2 function - ready
@@ -570,8 +569,6 @@ std::vector<std::pair<int, int>> multiplicationOfPolynomials(std::vector<std::pa
 	}
 
 	return newPolynom;
-	//std::cout << "This is the result polynomial: ";
-	//printPolynomial(newPolynom, polynom1.size() + polynom2.size() - 2);
 }
 
 //4 function
@@ -585,17 +582,17 @@ void dividePolynomials(std::vector<std::pair<int, int>>& dividend, std::vector<s
 	std::vector<std::pair<int, int>> currentPolynomial(dividend.size());
 	int countQuotient = 0,i=0,j=0;
 
-	while (remainder.empty()  && degree1>=degree2)
+	while (remainder.empty()  && degree1>= degree2)
 	{
 		int newDegree = (dividend.size()-1)-(divisor.size()-1);
 
- 		quotient[countQuotient++] = divideFractions(dividend[i++], divisor[j++]);
+ 		quotient[countQuotient++] = divideFractions(dividend[i++], divisor[0]);
 
 		currentPolynomial = multiplicationWithScalar(divisor,divisor.size()-1,quotient[countQuotient - 1]);
-		while (divisor.size() < dividend.size())
+		while (currentPolynomial.size() < dividend.size())
 		{
-			std::pair<int, int> coef = { 0,0 };
-			divisor.push_back(coef);
+			std::pair<int, int> coef = { 0,1 };
+			currentPolynomial.push_back(coef);
 		}
 		dividend = substractionOfPolynomials(dividend, currentPolynomial,dividend.size()-1, currentPolynomial.size()-1);
 
@@ -624,7 +621,6 @@ std::vector<std::pair<int, int>> multiplicationWithScalar(std::vector<std::pair<
 
 		newPolynom.push_back(newCoef);
 	}
-
 	return newPolynom;
 }
 
@@ -817,7 +813,9 @@ void runPolynomialCalculations()
 	switch (function)
 	{
 	case 1:
-		sumOfPolynomials(polynom1, polynom2, polynomialDegree, polynomialDegree2);
+		newPolynomial=sumOfPolynomials(polynom1, polynom2, polynomialDegree, polynomialDegree2);
+		std::cout << "This is the result polynomial: ";
+		printPolynomial(newPolynomial, newPolynomial.size()-1);
 		break;
 	case 2:
 		newPolynomial=substractionOfPolynomials(polynom1, polynom2, polynomialDegree, polynomialDegree2);
@@ -827,7 +825,7 @@ void runPolynomialCalculations()
 	case 3:
 		newPolynomial = multiplicationOfPolynomials(polynom1, polynom2, polynomialDegree, polynomialDegree2);
 		std::cout << "This is the result polynomial: ";
-		printPolynomial(newPolynomial, polynom1.size() + polynom2.size() - 2);
+		printPolynomial(newPolynomial, newPolynomial.size()-1);
 		break;
 	case 4:
 		dividePolynomials(polynom1, polynom2, polynomialDegree, polynomialDegree2);
