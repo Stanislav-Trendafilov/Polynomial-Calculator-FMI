@@ -199,52 +199,6 @@ void printPolynomial(std::vector<std::pair<int, int>>& polynom1, int polynomialD
 	std::cout << std::endl;
 }
 
-void printPolynomialWithXA(std::vector<std::pair<int, int>>& polynom1, int polynomialDegree)
-{
-	for (int i = 0; i < polynom1.size(); ++i)
-	{
-		if (i > 0 && polynom1[i].first > 0)
-		{
-			std::cout << "+";
-		}
-		if (polynom1[i].second == 1)
-		{
-			if (polynom1[i].first != 0)
-			{
-				if (i == polynom1.size() - 1)
-				{
-					std::cout << polynom1[i].first;
-				}
-				else
-				{
-					if (polynom1[i].first != 1)
-					{
-						if(polynom1[i].first)
-						std::cout << polynom1[i].first << "x^" << polynomialDegree - i;
-					}
-					else
-					{
-						std::cout << "x^" << polynomialDegree - i;
-					}
-				}
-			}
-		}
-		else
-		{
-			if (i == polynom1.size() - 1)
-			{
-				std::cout << polynom1[i].first << "/" << polynom1[i].second;
-			}
-			else
-			{
-				std::cout << polynom1[i].first << "/" << polynom1[i].second << "x^" << polynomialDegree - i;
-			}
-		}
-	}
-	std::cout << std::endl;
-
-}
-
 void printValueOfPolynom(std::pair<int, int> scalar, std::pair<int, int> valueOfPolynomial)
 {
 	if (scalar.second == 1)
@@ -502,6 +456,8 @@ void findAllRootsOfPolynomial(std::vector<std::pair<int, int>> allPossibleRoots,
 	printDecomposedPolynomial(allRoots, polynom1,oldestCoef,lcm);
 }
 
+std::vector<std::pair<int, int>> multiplicationWithScalar(std::vector<std::pair<int, int>>& polynom1, int degree1, std::pair<int, int>scalar);
+
 //1 function - ready
 void sumOfPolynomials(std::vector<std::pair<int, int>>& polynom1, std::vector<std::pair<int, int>>& polynom2, int degree1, int degree2)
 {
@@ -548,7 +504,7 @@ void sumOfPolynomials(std::vector<std::pair<int, int>>& polynom1, std::vector<st
 }
 
 //2 function - ready
-void substractionOfPolynomials(std::vector<std::pair<int, int>>& polynom1, std::vector<std::pair<int, int>>& polynom2, int degree1, int degree2)
+std::vector<std::pair<int, int>> substractionOfPolynomials(std::vector<std::pair<int, int>>& polynom1, std::vector<std::pair<int, int>>& polynom2, int degree1, int degree2)
 {
 	std::vector<std::pair<int, int>> newPolynom;
 
@@ -588,12 +544,11 @@ void substractionOfPolynomials(std::vector<std::pair<int, int>>& polynom1, std::
 
 		newPolynom.push_back(newCoef);
 	}
-	std::cout << "This is the result polynomial: ";
-	printPolynomial(newPolynom, startSameDegree + difference);
+	return newPolynom;
 }
 
 //3 function - ready
-void multiplicationOfPolynomials(std::vector<std::pair<int, int>>& polynom1, std::vector<std::pair<int, int>>& polynom2, int degree1, int degree2)
+std::vector<std::pair<int, int>> multiplicationOfPolynomials(std::vector<std::pair<int, int>>& polynom1, std::vector<std::pair<int, int>>& polynom2, int degree1, int degree2)
 {
 	std::vector<std::pair<int, int>> newPolynom(polynom1.size() + polynom2.size() - 1);
 
@@ -613,65 +568,46 @@ void multiplicationOfPolynomials(std::vector<std::pair<int, int>>& polynom1, std
 			newPolynom[i + j].second = newCoef.second;
 		}
 	}
-	std::cout << "This is the result polynomial: ";
 
-	printPolynomial(newPolynom, polynom1.size() + polynom2.size() - 2);
+	return newPolynom;
+	//std::cout << "This is the result polynomial: ";
+	//printPolynomial(newPolynom, polynom1.size() + polynom2.size() - 2);
 }
 
 //4 function
 void dividePolynomials(std::vector<std::pair<int, int>>& dividend, std::vector<std::pair<int, int>>& divisor, int degree1, int degree2)
 {
 	std::vector<std::pair<int, int>> remainder;
-	std::vector<std::pair<int, int>> quotient;
 
-	while (!remainder.empty() /* && remainder[0] >= divisor[0].second*/)
+	int newDegree = (degree1) - (degree2);
+
+	std::vector<std::pair<int, int>> quotient(newDegree+1);
+	std::vector<std::pair<int, int>> currentPolynomial(dividend.size());
+	int countQuotient = 0,i=0,j=0;
+
+	while (remainder.empty()  && degree1>=degree2)
 	{
-		// Изчисляване на водещия коефициент и степен на текущия частен член
-		int coefQuot = dividend[0].first / divisor[0].first;
-		int degreeQuot = dividend.size() - divisor.size();
+		int newDegree = (dividend.size()-1)-(divisor.size()-1);
 
-		// Добавяне на текущия член към частното
-		quotient.push_back({ coefQuot, degreeQuot });
+ 		quotient[countQuotient++] = divideFractions(dividend[i++], divisor[j++]);
 
-		// Създаване на нов полином: текущия член на частното умножен по делителя
-		std::vector<std::pair<int, int>> currentTerm;
-		for (const auto& term : divisor) {
-			currentTerm.push_back({ term.first * coefQuot, term.second + degreeQuot });
-		}
-
-		// Изваждане на текущия член от остатъка
-		std::vector<std::pair<int, int>> newRemainder;
-		size_t i = 0, j = 0;
-		while (i < remainder.size() || j < currentTerm.size())
+		currentPolynomial = multiplicationWithScalar(divisor,divisor.size()-1,quotient[countQuotient - 1]);
+		while (divisor.size() < dividend.size())
 		{
-			if (i < remainder.size() && (j >= currentTerm.size() || remainder[i].second > currentTerm[j].second)) {
-				newRemainder.push_back(remainder[i]);
-				i++;
-			}
-			else if (j < currentTerm.size() && (i >= remainder.size() || remainder[i].second < currentTerm[j].second))
-			{
-				newRemainder.push_back({ -currentTerm[j].first, currentTerm[j].second });
-				j++;
-			}
-			else
-			{
-				int newCoef = remainder[i].first - currentTerm[j].first;
-				if (newCoef != 0) {
-					newRemainder.push_back({ newCoef, remainder[i].second });
-				}
-				i++;
-				j++;
-			}
+			std::pair<int, int> coef = { 0,0 };
+			divisor.push_back(coef);
 		}
-		remainder = newRemainder;
+		dividend = substractionOfPolynomials(dividend, currentPolynomial,dividend.size()-1, currentPolynomial.size()-1);
+
+		degree1--;
 	}
 
 	printPolynomial(quotient, quotient.size() - 1);
-	printPolynomial(remainder, remainder.size());
+	printPolynomial(remainder, remainder.size() - 1);
 }
 
 //5 function - ready
-void multiplicationWithScalar(std::vector<std::pair<int, int>>& polynom1, int degree1, std::pair<int, int>scalar)
+std::vector<std::pair<int, int>> multiplicationWithScalar(std::vector<std::pair<int, int>>& polynom1, int degree1, std::pair<int, int>scalar)
 {
 	std::vector<std::pair<int, int>> newPolynom;
 
@@ -688,8 +624,8 @@ void multiplicationWithScalar(std::vector<std::pair<int, int>>& polynom1, int de
 
 		newPolynom.push_back(newCoef);
 	}
-	std::cout << "This is the result polynomial: ";
-	printPolynomial(newPolynom, degree1);
+
+	return newPolynom;
 }
 
 //6 function - ready
@@ -762,6 +698,31 @@ void representPolynomial(std::vector<std::pair<int, int>>& polynom1, int degree1
 
 	printPolynomial(newPolynomial, degree1);
 
+	std::cout << "In this polynomial x is equal to: ";
+	a.first *= -1;
+	if (a.second == 1)
+	{
+		if (a.first > 0)
+		{
+			std::cout << "x+" << a.first;
+		}
+		else
+		{
+			std::cout << "x" << a.first;
+		}
+	}
+	else
+	{
+		if (a.first > 0)
+		{
+			std::cout << "x+" << a.first << "/" << a.second << std::endl;
+		}
+		else
+		{
+			std::cout << "x" << a.first << "/" << a.second << std::endl;
+		}
+	}
+
 }
 
 //10 function - ready
@@ -802,6 +763,29 @@ void quitProgram()
 	return;
 }
 
+void EnterPolynomials(int& polynomialDegree, std::vector<std::pair<int, int>>& polynom1, int function, int& polynomialDegree2, std::vector<std::pair<int, int>>& polynom2)
+{
+	std::cout << "Enter Polynomial P(X): " << std::endl;
+	std::cout << "Enter degree of your polynomial: ";
+	std::cin >> polynomialDegree;
+	enterPolynomialCoeff(polynomialDegree, polynom1);
+	std::cout << "This is the input polynomial: ";
+	printPolynomial(polynom1, polynomialDegree);
+
+	std::cout << std::endl;
+
+	//check if function needs second polynomial
+	if (function == 1 || function == 2 || function == 3 || function == 4 || function == 7)
+	{
+		std::cout << "Enter Polynomial Q(X): " << std::endl;
+		std::cout << "Enter degree of your polynomial: ";
+		std::cin >> polynomialDegree2;
+		enterPolynomialCoeff(polynomialDegree2, polynom2);
+		std::cout << "This is the input polynomial: ";
+		printPolynomial(polynom2, polynomialDegree2);
+	}
+}
+
 void runPolynomialCalculations()
 {
 	int function;
@@ -819,30 +803,16 @@ void runPolynomialCalculations()
 		return quitProgram();
 	}
 
-	int polynomialDegree, polynomialDegree2;
-	std::cout << "Enter Polynomial P(X): " << std::endl;
-	std::cout << "Enter degree of your polynomial: ";
-	std::cin >> polynomialDegree;
 	std::vector<std::pair<int, int>> polynom1;
-	enterPolynomialCoeff(polynomialDegree, polynom1);
-	std::cout << "This is the input polynomial: ";
-	printPolynomial(polynom1, polynomialDegree);
-	std::cout << std::endl;
-
 	std::vector<std::pair<int, int>> polynom2;
-	//check if function needs second polynomial
-	if (function == 1 || function == 2 || function == 3 || function == 4)
-	{
-		std::cout << "Enter Polynomial Q(X): " << std::endl;
-		std::cout << "Enter degree of your polynomial: ";
-		std::cin >> polynomialDegree2;
-		enterPolynomialCoeff(polynomialDegree2, polynom2);
-		std::cout << "This is the input polynomial: ";
-		printPolynomial(polynom2, polynomialDegree2);
-	}
+
+	int polynomialDegree, polynomialDegree2;
+
+	EnterPolynomials(polynomialDegree, polynom1, function, polynomialDegree2, polynom2);
 
 	char input[MAX_BUFFER_SIZE];
 	std::pair<int, int>scalar;
+	std::vector<std::pair<int, int>> newPolynomial;
 
 	switch (function)
 	{
@@ -850,10 +820,14 @@ void runPolynomialCalculations()
 		sumOfPolynomials(polynom1, polynom2, polynomialDegree, polynomialDegree2);
 		break;
 	case 2:
-		substractionOfPolynomials(polynom1, polynom2, polynomialDegree, polynomialDegree2);
+		newPolynomial=substractionOfPolynomials(polynom1, polynom2, polynomialDegree, polynomialDegree2);
+		std::cout << "This is the result polynomial: ";
+		printPolynomial(newPolynomial, newPolynomial.size()-1);
 		break;
 	case 3:
-		multiplicationOfPolynomials(polynom1, polynom2, polynomialDegree, polynomialDegree2);
+		newPolynomial = multiplicationOfPolynomials(polynom1, polynom2, polynomialDegree, polynomialDegree2);
+		std::cout << "This is the result polynomial: ";
+		printPolynomial(newPolynomial, polynom1.size() + polynom2.size() - 2);
 		break;
 	case 4:
 		dividePolynomials(polynom1, polynom2, polynomialDegree, polynomialDegree2);
@@ -861,9 +835,11 @@ void runPolynomialCalculations()
 	case 5:
 		std::cout << "Enter value of the scalar: ";
 		std::cin >> input;
-
 		processingCoefficients(input, scalar);
-		multiplicationWithScalar(polynom1, polynomialDegree, scalar);
+
+		newPolynomial=multiplicationWithScalar(polynom1, polynomialDegree, scalar);
+		std::cout << "This is the result polynomial: ";
+		printPolynomial(newPolynomial, polynomialDegree);
 		break;
 	case 6:
 		findValueWithGivenNum(polynom1, polynomialDegree);
