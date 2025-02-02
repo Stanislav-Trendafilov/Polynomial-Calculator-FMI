@@ -1,4 +1,4 @@
-// Project04.cpp : This file contains the 'main' function. Program execution begins and ends there.
+﻿// Project04.cpp : This file contains the 'main' function. Program execution begins and ends there.
 
 #include <iostream>
 #include <windows.h> 
@@ -661,6 +661,31 @@ void findValueWithGivenNum(std::vector<std::pair<int, int>>& polynom1, int degre
 	printValueOfPolynom(scalar, valueOfPolynomial);
 }
 
+//8 function - ready
+void vietasFormulas(std::vector<std::pair<int, int>>& polynom1, int degree1)
+{
+	int counter = 1,makeNegative=-1;
+	std::cout << "This is the representation of Vieta's Formulas: " << std::endl;
+	for (size_t i = 1; i <= degree1; i++)
+	{
+		std::cout << "sigma" << i <<" = ";
+		std::pair<int, int>pair = divideFractions(polynom1[i],polynom1[0]);
+
+		pair.first*= makeNegative;
+
+		if (pair.second != 1)
+		{
+			std::cout << pair.first << "/" << pair.second << std::endl;
+		}
+		else
+		{
+			std::cout << pair.first << std::endl;
+		}
+
+		makeNegative *= -1;
+	}
+}
+
 //9 function - ready
 void representPolynomial(std::vector<std::pair<int, int>>& polynom1, int degree1)
 {
@@ -853,7 +878,7 @@ void runPolynomialCalculations()
 
 		break;
 	case 8:
-
+		vietasFormulas(polynom1,polynomialDegree);
 		break;
 	case 9:
 		representPolynomial(polynom1, polynomialDegree);
