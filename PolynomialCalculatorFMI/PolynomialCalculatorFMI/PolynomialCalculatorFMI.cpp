@@ -43,8 +43,10 @@ void chooseFunctionText()
 	std::cout << "11) Quit program" << std::endl;
 }
 
-int gcd(int a, int b) {
-	while (b != 0) {
+int gcd(int a, int b) 
+{
+	while (b != 0) 
+	{
 		int temp = b;
 		b = a % b;
 		a = temp;
@@ -72,21 +74,24 @@ std::pair<int, int> addFractions(std::pair<int, int>& a, std::pair<int, int>& b)
 	return std::pair<int, int>(numerator, denominator);
 }
 
-std::pair<int, int> subtractFractions(const std::pair<int, int>& a, const std::pair<int, int>& b) {
+std::pair<int, int> subtractFractions(const std::pair<int, int>& a, const std::pair<int, int>& b) 
+{
 	int numerator = a.first * b.second - b.first * a.second;
 	int denominator = a.second * b.second;
 	simplifyFraction(numerator, denominator);
 	return std::pair<int, int>(numerator, denominator);
 }
 
-std::pair<int, int> multiplyFractions(const std::pair<int, int>& a, const std::pair<int, int>& b) {
+std::pair<int, int> multiplyFractions(const std::pair<int, int>& a, const std::pair<int, int>& b)
+{
 	int numerator = a.first * b.first;
 	int denominator = a.second * b.second;
 	simplifyFraction(numerator, denominator);
 	return std::pair<int, int>(numerator, denominator);
 }
 
-std::pair<int, int> divideFractions(const std::pair<int, int>& a, const std::pair<int, int>& b) {
+std::pair<int, int> divideFractions(const std::pair<int, int>& a, const std::pair<int, int>& b) 
+{
 	int numerator = a.first * b.second;
 	int denominator = a.second * b.first;
 	simplifyFraction(numerator, denominator);
@@ -571,38 +576,40 @@ std::vector<std::pair<int, int>> multiplicationOfPolynomials(std::vector<std::pa
 	return newPolynom;
 }
 
-//4 function
+//4 function - ready
 void dividePolynomials(std::vector<std::pair<int, int>>& dividend, std::vector<std::pair<int, int>>& divisor, int degree1, int degree2)
 {
-	std::vector<std::pair<int, int>> remainder;
+	int newDegree = (degree1) - (degree2) + 1;
 
-	int newDegree = (degree1) - (degree2);
-
-	std::vector<std::pair<int, int>> quotient(newDegree+1);
+	std::vector<std::pair<int, int>> quotient( newDegree);
 	std::vector<std::pair<int, int>> currentPolynomial(dividend.size());
-	int countQuotient = 0,i=0,j=0;
 
-	while (remainder.empty()  && degree1>= degree2)
+	int countQuotient = 0, leadingCoef=0;
+
+	while (degree1>= degree2)
 	{
-		int newDegree = (dividend.size()-1)-(divisor.size()-1);
+ 		quotient[countQuotient] = divideFractions(dividend[leadingCoef], divisor[leadingCoef]);
 
- 		quotient[countQuotient++] = divideFractions(dividend[i++], divisor[0]);
+		currentPolynomial = multiplicationWithScalar(divisor,divisor.size()-1,quotient[countQuotient++]);
 
-		currentPolynomial = multiplicationWithScalar(divisor,divisor.size()-1,quotient[countQuotient - 1]);
 		while (currentPolynomial.size() < dividend.size())
 		{
 			std::pair<int, int> coef = { 0,1 };
 			currentPolynomial.push_back(coef);
-		}
+		}																									   
 		dividend = substractionOfPolynomials(dividend, currentPolynomial,dividend.size()-1, currentPolynomial.size()-1);
+
+		dividend.erase(dividend.begin());
 
 		degree1--;
 	}
 
+	std::cout << "The quotient: ";
 	printPolynomial(quotient, quotient.size() - 1);
-	printPolynomial(remainder, remainder.size() - 1);
+	std::cout << "The remainder: ";
+	printPolynomial(dividend, dividend.size() - 1);
 }
-
+																		
 //5 function - ready
 std::vector<std::pair<int, int>> multiplicationWithScalar(std::vector<std::pair<int, int>>& polynom1, int degree1, std::pair<int, int>scalar)
 {

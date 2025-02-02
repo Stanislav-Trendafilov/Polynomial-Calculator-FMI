@@ -1,0 +1,16 @@
+﻿  demo_calculator.cpp
+C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\demo_calculator\demo_calculator\demo_calculator.cpp(421,37): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\demo_calculator\demo_calculator\demo_calculator.cpp(487,18): warning C4101: 'denominator': unreferenced local variable
+C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\demo_calculator\demo_calculator\demo_calculator.cpp(487,7): warning C4101: 'numerator': unreferenced local variable
+C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\demo_calculator\demo_calculator\demo_calculator.cpp(532,18): warning C4101: 'denominator': unreferenced local variable
+C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\demo_calculator\demo_calculator\demo_calculator.cpp(532,7): warning C4101: 'numerator': unreferenced local variable
+C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\demo_calculator\demo_calculator\demo_calculator.cpp(587,63): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\demo_calculator\demo_calculator\demo_calculator.cpp(591,104): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\demo_calculator\demo_calculator\demo_calculator.cpp(597,118): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\demo_calculator\demo_calculator\demo_calculator.cpp(602,47): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\demo_calculator\demo_calculator\demo_calculator.cpp(603,49): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\demo_calculator\demo_calculator\demo_calculator.cpp(673,37): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\demo_calculator\demo_calculator\demo_calculator.cpp(818,58): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\demo_calculator\demo_calculator\demo_calculator.cpp(823,58): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\demo_calculator\demo_calculator\demo_calculator.cpp(828,58): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+  demo_calculator.vcxproj -> C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\demo_calculator\x64\Debug\demo_calculator.exe
