@@ -41,6 +41,8 @@ void chooseFunctionText()
 	std::cout << "9) Represent a polynomial in powers of (x+a)" << std::endl;
 	std::cout << "10) Factor polynomial and find its rational roots" << std::endl;
 	std::cout << "11) Quit program" << std::endl;
+	std::cout << "12) #BONUS - finding the n-th derivative of a polynomial " << std::endl;
+	std::cout << std::endl;
 }
 
 int gcd(int a, int b) 
@@ -791,6 +793,23 @@ void quitProgram()
 	return;
 }
 
+//#bonus 12 function
+void findNDerivative(std::vector<std::pair<int, int>>& polynom1, int degree1,int n)
+{
+	for (size_t i = 0; i < n; i++)
+	{
+		for (size_t i = 0; i < degree1; i++)
+		{
+			std::pair<int, int> newPair = {degree1-i,1};
+			polynom1[i] = multiplyFractions(polynom1[i], newPair);
+		}
+		polynom1.pop_back();
+		degree1--;
+	}
+	std::cout << "The n-th derivative representation is: ";
+	printPolynomial(polynom1,degree1);
+}
+
 void EnterPolynomials(int& polynomialDegree, std::vector<std::pair<int, int>>& polynom1, int function, int& polynomialDegree2, std::vector<std::pair<int, int>>& polynom2)
 {
 	std::cout << "Enter Polynomial P(X): " << std::endl;
@@ -820,7 +839,7 @@ void runPolynomialCalculations()
 	chooseFunctionText();
 	std::cin >> function;
 
-	if (function < 1 || function>11)
+	if (function < 1 || function>12)
 	{
 		std::cout << "Invalid input, you have to enter number between 1 and 11.";
 		return;
@@ -834,7 +853,7 @@ void runPolynomialCalculations()
 	std::vector<std::pair<int, int>> polynom1;
 	std::vector<std::pair<int, int>> polynom2;
 
-	int polynomialDegree, polynomialDegree2;
+	int polynomialDegree, polynomialDegree2, nDerivative;
 
 	EnterPolynomials(polynomialDegree, polynom1, function, polynomialDegree2, polynom2);
 
@@ -885,6 +904,11 @@ void runPolynomialCalculations()
 		break;
 	case 10:
 		factorPolynomial(polynom1, polynomialDegree);
+		break;
+	case 12:
+		std::cout << "Input n for derivative: ";
+		std::cin >> nDerivative;
+		findNDerivative(polynom1, polynomialDegree, nDerivative);
 		break;
 	default:
 		break;
