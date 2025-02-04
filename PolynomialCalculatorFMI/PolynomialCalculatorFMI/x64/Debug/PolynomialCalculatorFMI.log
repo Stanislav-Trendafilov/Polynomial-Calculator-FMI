@@ -13,22 +13,22 @@ C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\Polynomial
 C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI.cpp(698,119): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
 C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI.cpp(709,47): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
 C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI.cpp(715,51): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI.cpp(767,37): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI.cpp(929,56): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI.cpp(934,56): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI.cpp(939,56): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI.cpp(774,37): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI.cpp(936,56): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI.cpp(941,56): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI.cpp(946,56): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
 C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.34.31933\include\utility(172,48): warning C4267: 'initializing': conversion from 'size_t' to '_Ty1', possible loss of data
           with
           [
               _Ty1=int
           ]
-C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI.cpp(863,46): message : see reference to function template instantiation 'std::pair<int,int>::pair<size_t,int,0>(_Other1 &&,_Other2 &&) noexcept' being compiled
+C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI.cpp(870,46): message : see reference to function template instantiation 'std::pair<int,int>::pair<size_t,int,0>(_Other1 &&,_Other2 &&) noexcept' being compiled
           with
           [
               _Other1=size_t,
               _Other2=int
           ]
-C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI.cpp(863,34): message : see reference to function template instantiation 'std::pair<int,int>::pair<size_t,int,0>(_Other1 &&,_Other2 &&) noexcept' being compiled
+C:\Users\User\Documents\Github repositories\Polynomial-Calculator-FMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI\PolynomialCalculatorFMI.cpp(870,34): message : see reference to function template instantiation 'std::pair<int,int>::pair<size_t,int,0>(_Other1 &&,_Other2 &&) noexcept' being compiled
           with
           [
               _Other1=size_t,

@@ -1,7 +1,7 @@
 ﻿// Project04.cpp : This file contains the 'main' function. Program execution begins and ends there.
 
 #include <iostream>
-#include <windows.h> 
+//#include <windows.h> 
 #include <vector>
 
 const int MAX_BUFFER_SIZE = 512;
@@ -737,7 +737,14 @@ void vietasFormulas(std::vector<std::pair<int, int>>& polynom1, int degree1)
 
 		if (pair.second != 1)
 		{
-			std::cout << pair.first << "/" << pair.second << std::endl;
+			if (pair.second < 0)
+			{
+				std::cout << pair.first*(-1) << "/" << pair.second * (-1) << std::endl;
+			}
+			else
+			{
+				std::cout << pair.first << "/" << pair.second << std::endl;
+			}
 		}
 		else
 		{
@@ -978,7 +985,7 @@ void runPolynomialCalculations()
 
 int main()
 {
-	system("Color 06");
+	//system("Color 06");
 	std::cout << "       Welcome to my final project for this course - Polynomial Calculator" << std::endl;
 	std::cout << "It is a mini project intended to work with polynomials with rational coefficients." << std::endl;
 
