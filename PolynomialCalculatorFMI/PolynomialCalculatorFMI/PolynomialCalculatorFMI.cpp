@@ -663,6 +663,66 @@ void findValueWithGivenNum(std::vector<std::pair<int, int>>& polynom1, int degre
 	printValueOfPolynom(scalar, valueOfPolynomial);
 }
 
+//7 function - ready
+void findGcd(std::vector<std::pair<int, int>>& dividend, std::vector<std::pair<int, int>>& divisor, int degree1, int degree2)
+{
+	std::vector<std::pair<int, int>> remainder;
+
+	int countQuotient, leadingCoef = 0, newDegree;
+
+	while (true)
+	{
+		countQuotient = 0;
+		newDegree = (dividend.size())-(divisor.size())+1;
+		std::vector<std::pair<int, int>> quotient(newDegree);
+		std::vector<std::pair<int, int>> currentPolynomial(dividend.size());
+
+		if (dividend.size() < divisor.size())
+		{
+			std::vector<std::pair<int, int>> swap = dividend;
+			dividend = divisor;
+			divisor = swap;
+		}
+
+		while (dividend.size()-1 >= divisor.size()-1)
+		{
+			quotient[countQuotient] = divideFractions(dividend[leadingCoef], divisor[leadingCoef]);
+
+			currentPolynomial = multiplicationWithScalar(divisor, divisor.size() - 1, quotient[countQuotient++]);
+
+			while (currentPolynomial.size() < dividend.size())
+			{
+				std::pair<int, int> coef = { 0,1 };
+				currentPolynomial.push_back(coef);
+			}
+			dividend = substractionOfPolynomials(dividend, currentPolynomial, dividend.size() - 1, currentPolynomial.size() - 1);
+
+			dividend.erase(dividend.begin());
+
+			//degree1--;
+		}
+		remainder = dividend;
+
+		if (remainder[0].first == 0)
+		{
+			std::cout << "GCD of polynomials: ";
+			printPolynomial(divisor, divisor.size() - 1);
+			break;
+		}
+		if (remainder.size()==1)
+		{
+			std::cout << "GCD of polynomials: ";	
+			printPolynomial(remainder, remainder.size() - 1);
+			break;
+		}
+		
+
+		dividend = divisor;
+		divisor = remainder;
+
+	}
+}
+
 //8 function - ready
 void vietasFormulas(std::vector<std::pair<int, int>>& polynom1, int degree1)
 {
@@ -894,7 +954,7 @@ void runPolynomialCalculations()
 		findValueWithGivenNum(polynom1, polynomialDegree);
 		break;
 	case 7:
-
+		findGcd(polynom1, polynom2, polynomialDegree, polynomialDegree2);
 		break;
 	case 8:
 		vietasFormulas(polynom1,polynomialDegree);
@@ -918,7 +978,7 @@ void runPolynomialCalculations()
 
 int main()
 {
-	system("Color 0A");
+	system("Color 06");
 	std::cout << "       Welcome to my final project for this course - Polynomial Calculator" << std::endl;
 	std::cout << "It is a mini project intended to work with polynomials with rational coefficients." << std::endl;
 
